@@ -1,14 +1,28 @@
-import { useState } from 'react'
-import BookList from '../components/BookList'
-import BookForm from '../components/BookForm'
+import { useState, useEffect } from "react";
+import BookList from "../components/BookList";
+import BookForm from "../components/BookForm";
+import { db } from "../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function Home() {
-  const [books, setBooks] = useState([
-    { title: 'the name of the wind', id: 1 },
-    { title: 'the dragon reborn', id: 2 },
-    { title: 'the final empire', id: 3 },
-    { title: 'the way of kings', id: 4 }
-  ])
+  const [books, setBooks] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const ref = collection(db, "books");
+
+      const { docs } = await getDocs(ref);
+
+      let results = docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setBooks(results);
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className="App">
@@ -17,3 +31,6 @@ export default function Home() {
     </div>
   );
 }
+
+// 4 ka na
+  
