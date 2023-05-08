@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 // firebase imports
 import { auth } from "../firebase/config";
@@ -6,6 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
+  const { setUser } = useAuthContext();
 
   const login = async (email, password) => {
     setError(null);
@@ -13,7 +15,7 @@ export const useLogin = () => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
 
-      console.log("User logged in:", res.user);
+      setUser(res.user);
     } catch (err) {
       setError(err.message);
     }
