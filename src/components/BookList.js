@@ -6,6 +6,8 @@ export default function BookList({ books }) {
   const handleClick = async id => {
     const ref = doc(db, "books", id);
 
+    console.log(books);
+
     await deleteDoc(ref);
   };
 

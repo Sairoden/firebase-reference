@@ -12,6 +12,8 @@ export const useCollection = collectionData => {
     const unsub = onSnapshot(ref, snapshot => {
       const results = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+      console.log(results);
+
       setDocuments(results);
     });
 
